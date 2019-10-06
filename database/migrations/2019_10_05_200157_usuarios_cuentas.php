@@ -15,10 +15,10 @@ class UsuariosCuentas extends Migration
     {
         Schema::create('usuarios_cuentas', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('cuenta_id');
             $table->integer('usuario_id');
-            $table->string('perfil');
+            $table->string('perfil')->default('cliente');
             $table->timestamps();
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
         });
     }
 
@@ -29,6 +29,6 @@ class UsuariosCuentas extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('usuarios_cuentas');
     }
 }

@@ -19,6 +19,8 @@ class CreateUsersTable extends Migration
             $table->string('correo')->unique();
             $table->rememberToken();
             $table->timestamps();
+
+            $table->index(['correo', 'nombre']);
         });
     }
 
@@ -29,6 +31,6 @@ class CreateUsersTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('usuarios');
     }
 }

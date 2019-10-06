@@ -15,16 +15,18 @@ class Citas extends Migration
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('usuario_id');
+            $table->bigInteger('usuario_id');
             $table->integer('contenedor_id');
             $table->string('idx')->unique();
-            $table->boolean('confirmada')->default('false');
-            $table->boolean('ejecutada')->default('false');
+            $table->string('estado')->default('reservada');
             $table->longText('comentario');
             $table->timestamp('inicio');
             $table->timestamp('fin');
             $table->timestamps();
+            $table->foreign('contenedor_id')->references('id')->on('contenedores');
+            $table->foreign('usuario_id')->references('id')->on('usuarios');
         });
+
     }
 
     /**
@@ -34,6 +36,6 @@ class Citas extends Migration
      */
     public function down()
     {
-        //
+        Schema::drop('citas');
     }
 }

@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Contenedores extends Migration
+class Formularios extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,12 @@ class Contenedores extends Migration
      */
     public function up()
     {
-        Schema::create('contenedores', function (Blueprint $table) {
+        Schema::create('formularios', function (Blueprint $table) {
             $table->increments('id');
             $table->string('idx')->unique();
-            $table->string('nombre')->index();
-            $table->longText('comentario');
-            $table->json('configuracion');
+            $table->json('configuracion')->nullable();
             $table->timestamps();
-            $table->index(['idx', 'nombre']);
+            $table->index('idx');
         });
     }
 
@@ -31,6 +29,6 @@ class Contenedores extends Migration
      */
     public function down()
     {
-        Schema::drop('contenedores');
+        Schema::drop('formularios');
     }
 }

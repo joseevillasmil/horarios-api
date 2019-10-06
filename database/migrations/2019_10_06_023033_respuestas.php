@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Contenedores extends Migration
+class Respuestas extends Migration
 {
     /**
      * Run the migrations.
@@ -13,14 +13,14 @@ class Contenedores extends Migration
      */
     public function up()
     {
-        Schema::create('contenedores', function (Blueprint $table) {
+        Schema::create('citas_respuestas', function (Blueprint $table) {
             $table->increments('id');
+            $table->bigInteger('cita_id');
             $table->string('idx')->unique();
-            $table->string('nombre')->index();
-            $table->longText('comentario');
-            $table->json('configuracion');
+            $table->json('data')->nullable();
             $table->timestamps();
-            $table->index(['idx', 'nombre']);
+            $table->foreign('cita_id')->references('id')->on('citas');
+            $table->index('idx');
         });
     }
 
@@ -31,6 +31,6 @@ class Contenedores extends Migration
      */
     public function down()
     {
-        Schema::drop('contenedores');
+        Schema::drop('citas_respuestas');
     }
 }

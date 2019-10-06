@@ -16,3 +16,8 @@ use Illuminate\Http\Request;
 Route::middleware('auth:api')->get('/user', function (Request $request) {
     return $request->user();
 });
+
+Route::resource('citas', 'CitaController');
+Route::resource('contenedores', 'ContenedorController');
+Route::get('avaiable-dates', 'CitaController@avaiableDate');
+Route::get('avaiable-time', 'CitaController@avaiableTime');
