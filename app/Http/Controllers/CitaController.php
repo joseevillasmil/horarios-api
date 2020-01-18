@@ -128,7 +128,7 @@ class CitaController extends Controller
                             )
                         ) {
                             #parche
-                            if(!$contenedor->configuracion->holidays) $contenedor->configuracion->holidays = ['null'];
+                            if($contenedor->configuracion->holidays == []) $contenedor->configuracion->holidays = ['null'];
                             if ($contenedor->configuracion->holidays and !in_array($date->format('Y-m-d'), $contenedor->configuracion->holidays)) {
                                 //Si llegamos hasta aca, buscamos que los slots usados no superen el limite.
                                 $citas = Cita::whereDate('inicio', $date->format('Y-m-d'))
@@ -147,7 +147,6 @@ class CitaController extends Controller
                 }
             }
         }
-        die;
         return response()->json($avaiable);
     }
 
