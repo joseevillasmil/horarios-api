@@ -25,6 +25,7 @@ Route::group(['middleware' => ['cors']], function() {
     });
 
     Route::resource('citas', 'CitaController');
+    Route::get('clients/find', 'ClienteController@find');
     Route::resource('contenedores', 'ContenedorController');
     Route::get('public/contenedores/{idx}', 'ContenedorController@showByIdx')->name('contenedores.show-by-idx');
     Route::resource('usuarios', 'UsuariosController');

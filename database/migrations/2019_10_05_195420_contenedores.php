@@ -15,12 +15,12 @@ class Contenedores extends Migration
     {
         Schema::create('contenedores', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('idx')->unique();
-            $table->string('nombre')->index();
+            $table->string('idx');//->unique();
+            $table->string('nombre');//->index();
             $table->longText('comentario');
             $table->json('configuracion');
             $table->timestamps();
-            $table->index(['idx', 'nombre']);
+           // $table->index(['idx', 'nombre']);
         });
     }
 

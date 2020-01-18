@@ -78,12 +78,22 @@ class ClienteController extends Controller
         */
         return response()->json(['idx' => $cliente->idx, 'error' => null]);
     }
+
     function show($id) {
         $client = Cliente::find($id);
         if (!$client) {
             return response()->json(['error' => 'No existe'], 404);
         }
         $client->nacimiento = $client->nacimiento ? $client->nacimiento->format('Y-m-d') : '';
+        return response()->json($client);
+    }
+
+    function find(Request $request) {
+        $client = Cliente::select('idx', 'nombre', 'dni', 'correo', 'telefono')
+                        ->where('correo', 'like', $request->email)->first();
+        if (!$client) {
+            return response()->json(['error' => 'No existe'], 404);
+        }
         return response()->json($client);
     }
 

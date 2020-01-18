@@ -5,15 +5,17 @@ namespace App\Http\Controllers;
 use App\Cita;
 use App\Contenedor;
 use App\Cliente;
+use App\Mail\Confirm;
+use App\Mail\resetPassword;
 use Auth;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Mail;
 use Illuminate\Support\Str;
 use mysql_xdevapi\Collection;
 
 class CitaController extends Controller
 {
     function store(Request $request){
-
         $cliente = Cliente::where('idx', $request->cliente)->first();
         $cita = new Cita();
         $cita->fill($request->all());
@@ -25,7 +27,7 @@ class CitaController extends Controller
         $cita->codigo = Str::random(6);
         $cita->idx = uniqid(dechex(rand(100000,999999)), true);
         $cita->save();
-
+        Mail::to($cliente->correo)->send(new Confirm($cita->inicio));
         return response()->json(['idx' => $cita->idx]);
     }
 

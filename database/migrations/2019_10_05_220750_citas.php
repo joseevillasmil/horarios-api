@@ -17,7 +17,7 @@ class Citas extends Migration
             $table->increments('id');
             $table->bigInteger('cliente_id');
             $table->integer('contenedor_id');
-            $table->string('idx')->unique();
+            $table->string('idx');//->unique();
             $table->string('estado')->default('pendiente');
             $table->longText('comentario')->nullable();
             $table->timestamp('inicio');
