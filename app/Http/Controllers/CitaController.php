@@ -107,7 +107,8 @@ class CitaController extends Controller
         }
 
         $today = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
-
+        $maxDate = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
+        $maxDate->add(new DateInterval('P30D'));
         //Recorremos.
         for($j = (int)$mes; $j <= $maximo; $j++) {
             $c = cal_days_in_month(CAL_GREGORIAN, str_pad($j, 2, '0', STR_PAD_LEFT), date('Y'));
@@ -116,7 +117,7 @@ class CitaController extends Controller
 
                 $date = \DateTime::createFromFormat('Y-m-d', $date_str);
 
-                if ($date >= $today) {
+                if ($date >= $today && $date <= $maxDate) {
                     if ($contenedor and $contenedor->configuracion and $contenedor->configuracion->weekdays) {
                         $dayoftheweek = strtolower(date('l', strtotime($date->format('Y-m-d'))));
 
