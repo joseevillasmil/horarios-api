@@ -98,42 +98,47 @@ class CitaController extends Controller
 
         // Buscamos la cantidad de días del mes y la fecha actual.
         $avaiable = [];
-        $c = cal_days_in_month(CAL_GREGORIAN, $request->mes, date('Y'));
+        if($request->mes) {
+            $mes = (int)$request->mes;
+            $maximo = (int)$request->mes;
+        }else {
+            $maximo = 12;
+            $mes = (int)date('m');
+        }
+
         $today = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
         //Recorremos.
-        for($i = 1; $i <= $c; $i++)
-        {
-            $date_str = date('Y')."-$request->mes-".str_pad($i, 2, '0', STR_PAD_LEFT);
-            $date = \DateTime::createFromFormat('Y-m-d', $date_str);
+        for($j = $mes; $mes <= $maximo; $mes++) {
+            $c = cal_days_in_month(CAL_GREGORIAN, $mes, date('Y'));
+            for ($i = 1; $i <= $c; $i++) {
+                $date_str = date('Y') . "-".str_pad($j, 2, '0', STR_PAD_LEFT)."-" . str_pad($i, 2, '0', STR_PAD_LEFT);
+                $date = \DateTime::createFromFormat('Y-m-d', $date_str);
 
-            if($date >= $today )
-            {
-                if($contenedor and $contenedor->configuracion and $contenedor->configuracion->weekdays)
-                {
-                    $dayoftheweek = strtolower(date('l', strtotime( $date->format('Y-m-d')) ) );
+                if ($date >= $today) {
+                    if ($contenedor and $contenedor->configuracion and $contenedor->configuracion->weekdays) {
+                        $dayoftheweek = strtolower(date('l', strtotime($date->format('Y-m-d'))));
 
-                    if($contenedor->configuracion->weekdays->$dayoftheweek and $contenedor->configuracion->weekdays->$dayoftheweek->avaiable
-                        or (
+                        if ($contenedor->configuracion->weekdays->$dayoftheweek and $contenedor->configuracion->weekdays->$dayoftheweek->avaiable
+                            or (
                                 property_exists($contenedor->configuracion, 'extra_days')
                                 and $contenedor->configuracion->extra_days
                                 and in_array($date->format('Y-m-d'), $contenedor->configuracion->extra_days)
                             )
-                        )
-                    {
+                        ) {
 
-                        if($contenedor->configuracion->holidays and !in_array($date->format('Y-m-d'), $contenedor->configuracion->holidays)){
-                            //Si llegamos hasta aca, buscamos que los slots usados no superen el limite.
-                            $citas = Cita::whereDate('inicio', $date->format('Y-m-d'))
-                                        ->count();
-                            $time = $contenedor->configuracion->weekdays->$dayoftheweek->time;
-                            $start = $this->timeToMinutes($time[0]);
-                            $end = $this->timeToMinutes($time[1]);
+                            if ($contenedor->configuracion->holidays and !in_array($date->format('Y-m-d'), $contenedor->configuracion->holidays)) {
+                                //Si llegamos hasta aca, buscamos que los slots usados no superen el limite.
+                                $citas = Cita::whereDate('inicio', $date->format('Y-m-d'))
+                                    ->count();
+                                $time = $contenedor->configuracion->weekdays->$dayoftheweek->time;
+                                $start = $this->timeToMinutes($time[0]);
+                                $end = $this->timeToMinutes($time[1]);
 
-                            $c_horas = ($end - $start) * $contenedor->configuracion->slots / $contenedor->configuracion->step;
-                            if($citas < $c_horas)
-                            {
-                                $avaiable[] = $date->format('Y-m-d');
+                                $c_horas = ($end - $start) * $contenedor->configuracion->slots / $contenedor->configuracion->step;
+                                if ($citas < $c_horas) {
+                                    $avaiable[] = $date->format('Y-m-d');
+                                }
                             }
                         }
                     }
