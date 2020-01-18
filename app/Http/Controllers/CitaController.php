@@ -110,7 +110,7 @@ class CitaController extends Controller
 
         //Recorremos.
         for($j = $mes; $mes <= $maximo; $mes++) {
-            $c = cal_days_in_month(CAL_GREGORIAN, $mes, date('Y'));
+            $c = cal_days_in_month(CAL_GREGORIAN, str_pad($j, 2, '0', STR_PAD_LEFT), date('Y'));
             for ($i = 1; $i <= $c; $i++) {
                 $date_str = date('Y') . "-".str_pad($j, 2, '0', STR_PAD_LEFT)."-" . str_pad($i, 2, '0', STR_PAD_LEFT);
                 echo $date_str;
