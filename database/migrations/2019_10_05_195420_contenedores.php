@@ -18,7 +18,7 @@ class Contenedores extends Migration
             $table->string('idx');//->unique();
             $table->string('nombre');//->index();
             $table->longText('comentario');
-            $table->json('configuracion');
+            $table->longtext('configuracion');
             $table->timestamps();
            // $table->index(['idx', 'nombre']);
         });
