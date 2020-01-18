@@ -21,7 +21,7 @@ class Citas extends Migration
             $table->string('estado')->default('pendiente');
             $table->longText('comentario')->nullable();
             $table->timestamp('inicio');
-            $table->timestamp('fin');
+            $table->timestamp('fin')->nullable();
             $table->string('codigo');
             $table->timestamp('verificada')->nullable();
             $table->timestamps();
