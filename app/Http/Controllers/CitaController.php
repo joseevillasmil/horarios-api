@@ -165,7 +165,8 @@ class CitaController extends Controller
             $aux = date('H:i', $endTime);
         }while(strtotime($aux) < strtotime($time[1]) && count($steps) < 1440);
 
-        $taken = Cita::select(\DB::raw('to_char(inicio, \'HH24:MI\') as time'))
+        // postgre $taken = Cita::select(\DB::raw('to_char(inicio, \'HH24:MI\') as time'))
+        $taken = Cita::select(\DB::raw('DATE_FORMAT(inicio, \'%H:%i\') as time'))
                     ->whereDate('inicio', $request->day)
                     ->groupBy('time')
                     ->havingRaw('count(id) >='. $contenedor->configuracion->slots)
