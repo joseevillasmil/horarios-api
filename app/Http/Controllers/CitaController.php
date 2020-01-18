@@ -115,11 +115,11 @@ class CitaController extends Controller
                 $date_str = date('Y') . "-".str_pad($j, 2, '0', STR_PAD_LEFT)."-" . str_pad($i, 2, '0', STR_PAD_LEFT);
 
                 $date = \DateTime::createFromFormat('Y-m-d', $date_str);
-
+                print_r($date);
                 if ($date >= $today) {
                     if ($contenedor and $contenedor->configuracion and $contenedor->configuracion->weekdays) {
                         $dayoftheweek = strtolower(date('l', strtotime($date->format('Y-m-d'))));
-
+                        echo $dayoftheweek ."\n";
                         if ($contenedor->configuracion->weekdays->$dayoftheweek and $contenedor->configuracion->weekdays->$dayoftheweek->avaiable
                             or (
                                 property_exists($contenedor->configuracion, 'extra_days')
@@ -146,6 +146,7 @@ class CitaController extends Controller
                 }
             }
         }
+        die;
         return response()->json($avaiable);
     }
 
