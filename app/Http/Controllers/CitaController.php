@@ -127,20 +127,17 @@ class CitaController extends Controller
                                 and in_array($date->format('Y-m-d'), $contenedor->configuracion->extra_days)
                             )
                         ) {
-
+                            #parche
+                            if(!$contenedor->configuracion->holidays) $contenedor->configuracion->holidays = ['null'];
                             if ($contenedor->configuracion->holidays and !in_array($date->format('Y-m-d'), $contenedor->configuracion->holidays)) {
                                 //Si llegamos hasta aca, buscamos que los slots usados no superen el limite.
                                 $citas = Cita::whereDate('inicio', $date->format('Y-m-d'))
                                     ->count();
-
-                                print_r($contenedor->configuracion->weekdays->$dayoftheweek);
                                 $time = $contenedor->configuracion->weekdays->$dayoftheweek->time;
                                 $start = $this->timeToMinutes($time[0]);
                                 $end = $this->timeToMinutes($time[1]);
 
                                 $c_horas = ($end - $start) * $contenedor->configuracion->slots / $contenedor->configuracion->step;
-                                echo $citas."\n";
-                                echo $c_horas."\n";
                                 if ($citas < $c_horas) {
                                     $avaiable[] = $date->format('Y-m-d');
                                 }
