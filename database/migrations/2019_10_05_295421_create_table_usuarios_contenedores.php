@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class Formularios extends Migration
+class CreateTableUsuariosContenedores extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,13 @@ class Formularios extends Migration
      */
     public function up()
     {
-        Schema::create('formularios', function (Blueprint $table) {
+        Schema::create('usuarios_contenedores', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('idx')->unique();
-            $table->json('configuracion')->nullable();
+            $table->bigInteger('usuario_id');
+            $table->bigInteger('contenedor_id');
+            $table->foreign('contenedor_id')->references('id')->on('contenedores');
+            $table->foreign('usuario_id')->references('id')->on('users');
             $table->timestamps();
-            $table->index('idx');
         });
     }
 
@@ -29,6 +30,6 @@ class Formularios extends Migration
      */
     public function down()
     {
-        Schema::drop('formularios');
+        Schema::dropIfExists('usuarios_contenedores');
     }
 }

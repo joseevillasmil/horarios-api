@@ -13,16 +13,13 @@ class Archivos extends Migration
      */
     public function up()
     {
-        Schema::create('citas_archivos', function (Blueprint $table) {
+        Schema::create('archivos', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('cita_id');
-            $table->string('idx')->unique();
+            $table->string('relation');
+            $table->bigInteger('relation_id');
             $table->string('filename');
-            $table->string('descripcion');
             $table->string('path');
             $table->timestamps();
-            $table->foreign('cita_id')->references('id')->on('citas');
-            $table->index('idx');
         });
     }
 
@@ -33,6 +30,6 @@ class Archivos extends Migration
      */
     public function down()
     {
-        Schema::drop('citas_archivos');
+        Schema::drop('archivos');
     }
 }

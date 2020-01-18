@@ -4,7 +4,7 @@ use Illuminate\Support\Facades\Schema;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class UsuariosCuentas extends Migration
+class CreateTablePasswordReset extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class UsuariosCuentas extends Migration
      */
     public function up()
     {
-        Schema::create('usuarios_cuentas', function (Blueprint $table) {
+        Schema::create('users_password_reset', function (Blueprint $table) {
             $table->increments('id');
-            $table->integer('usuario_id');
-            $table->string('perfil')->default('cliente');
+            $table->string('token');
+            $table->bigInteger('user_id');
+            $table->timestamp('used')->nullable();
             $table->timestamps();
-            $table->foreign('usuario_id')->references('id')->on('usuarios');
         });
     }
 
@@ -29,6 +29,6 @@ class UsuariosCuentas extends Migration
      */
     public function down()
     {
-        Schema::drop('usuarios_cuentas');
+        Schema::dropIfExists('users_password_reset');
     }
 }

@@ -12,5 +12,14 @@
 */
 
 Route::get('/', function () {
-    return view('welcome');
+    return 'api horarios 1.0';
 });
+
+Route::group(['middleware' => ['cors']], function(){
+    // disabled not used routes.
+    Auth::routes(['register' => false, 'reset' => false]);
+    Route::options('/oauth/{any?}', function(){
+        return response()->json([]);
+    });
+});
+

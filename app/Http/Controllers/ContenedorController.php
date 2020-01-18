@@ -3,47 +3,65 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
 use App\Contenedor;
 
 class ContenedorController extends Controller
 {
     function store(Request $request){
-        /*
-        $validator = Validator::make($request->all(), [
-            'nombre' => 'required|unique:contenedores|max:255'
-        ]);
 
-        if($validator->fails()){
-            return response()->json('error');
-        }
-        */
         $contenedor = new Contenedor();
         $contenedor->fill($request->all());
+        $contenedor->configuracion = $request->configuracion;
         $contenedor->idx = uniqid(dechex(rand(100000,999999)), true);
         $contenedor->save();
 
-        return response()->json(['idx' => $contenedor->idx]);
+        return response()->json(['id' => $contenedor->id]);
     }
 
     function index(Request $request){
-        $columns = ['idx', 'nombre'];
+        if ( $request->list ) {
+            $contenedores = Contenedor::select('idx', DB::raw('nombre as text'))
+                ->orderBy('text')
+                ->get();
+            $return = [];
+            foreach($contenedores as $contenedor) {
+                $return[] = ['id' => $contenedor->idx, 'text' => $contenedor->text];
+            }
+            return response()->json(['containers' => $return]);
+        }
+
+        $columns = ['id', 'nombre', 'comentario'];
         $contenedores = Contenedor::select($columns)
                         ->orderBy('nombre')
                         ->get();
-        return response()->json($contenedores);
+        return response()->json(['containers' => $contenedores]);
     }
 
-    function show(Request $request, $idx){
-        $columns = ['idx', 'nombre', 'configuracion', 'comentario'];
+    function show($id){
+        $columns = ['id', 'nombre', 'configuracion', 'comentario'];
         $contenedor = Contenedor::select($columns)
-            ->where('idx', $idx)
-            ->first();
+            ->find($id);
+        if(!$contenedor) {
+            return response()->json(['error' => 'no existe'], 404);
+        }
         return response()->json($contenedor);
     }
 
-    function update(Request $request, $idx){
-            $contenedor = Contenedor::where('idx', $idx)
+    function showByIdx($idx){
+        $columns = ['id', 'nombre', 'configuracion', 'comentario'];
+        $contenedor = Contenedor::select($columns)
+            ->where('idx', $idx)
+            ->first();
+        if(!$contenedor) {
+            return response()->json(['error' => 'no existe'], 404);
+        }
+        return response()->json($contenedor);
+    }
+
+    function update(Request $request, $id){
+            $contenedor = Contenedor::where('id', $id)
                                     ->first();
             $contenedor->fill($request->all());
             $contenedor->save();

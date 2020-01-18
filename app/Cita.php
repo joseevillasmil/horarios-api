@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Str;
 
 class Cita extends Model
 {
@@ -15,19 +16,22 @@ class Cita extends Model
         'fin'
     ];
 
-    function contenedor(){
-        $this->belongsTo('Contenedor', 'contenedor_id');
+    function __construct(array $attributes = [])
+    {
+        parent::__construct($attributes);
+        $this->idx = uniqid(Str::random(10), true);
     }
 
-    function usuario(){
-        $this->belongsTo('Usuario', 'usuario_id');
+    function contenedor(){
+        return $this->belongsTo('App\Contenedor', 'contenedor_id');
+    }
+
+    function cliente(){
+        return $this->belongsTo('App\Cliente', 'cliente_id');
     }
 
     function archivos(){
-        $this->hasMany('CitaArchivo', 'cita_id');
+        return $this->hasMany('App\Archivo', 'relation_id')->where('relation', 'cita');
     }
 
-    function respuesta(){
-        $this->hasOne('CitaRespuesta', 'cita_id');
-    }
 }

@@ -15,18 +15,19 @@ class Citas extends Migration
     {
         Schema::create('citas', function (Blueprint $table) {
             $table->increments('id');
-            $table->bigInteger('usuario_id');
+            $table->bigInteger('cliente_id');
             $table->integer('contenedor_id');
             $table->string('idx')->unique();
-            $table->string('estado')->default('reservada');
-            $table->longText('comentario');
+            $table->string('estado')->default('pendiente');
+            $table->longText('comentario')->nullable();
             $table->timestamp('inicio');
             $table->timestamp('fin');
+            $table->string('codigo');
+            $table->timestamp('verificada')->nullable();
             $table->timestamps();
             $table->foreign('contenedor_id')->references('id')->on('contenedores');
-            $table->foreign('usuario_id')->references('id')->on('usuarios');
+            $table->foreign('cliente_id')->references('id')->on('clientes');
         });
-
     }
 
     /**
