@@ -115,11 +115,11 @@ class CitaController extends Controller
                 $date_str = date('Y') . "-".str_pad($j, 2, '0', STR_PAD_LEFT)."-" . str_pad($i, 2, '0', STR_PAD_LEFT);
 
                 $date = \DateTime::createFromFormat('Y-m-d', $date_str);
-                print_r($date);
+
                 if ($date >= $today) {
                     if ($contenedor and $contenedor->configuracion and $contenedor->configuracion->weekdays) {
                         $dayoftheweek = strtolower(date('l', strtotime($date->format('Y-m-d'))));
-                        echo $dayoftheweek ."\n";
+
                         if ($contenedor->configuracion->weekdays->$dayoftheweek and $contenedor->configuracion->weekdays->$dayoftheweek->avaiable
                             or (
                                 property_exists($contenedor->configuracion, 'extra_days')
@@ -132,11 +132,15 @@ class CitaController extends Controller
                                 //Si llegamos hasta aca, buscamos que los slots usados no superen el limite.
                                 $citas = Cita::whereDate('inicio', $date->format('Y-m-d'))
                                     ->count();
+
+                                print_r($contenedor->configuracion->weekdays->$dayoftheweek);
                                 $time = $contenedor->configuracion->weekdays->$dayoftheweek->time;
                                 $start = $this->timeToMinutes($time[0]);
                                 $end = $this->timeToMinutes($time[1]);
 
                                 $c_horas = ($end - $start) * $contenedor->configuracion->slots / $contenedor->configuracion->step;
+                                echo $citas."\n";
+                                echo $c_horas."\n";
                                 if ($citas < $c_horas) {
                                     $avaiable[] = $date->format('Y-m-d');
                                 }
