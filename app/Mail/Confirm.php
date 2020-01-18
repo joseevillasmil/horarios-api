@@ -29,7 +29,7 @@ class Confirm extends Mailable
     public function build()
     {
         return $this->subject('Hora de atención asignada')
-            ->from('no-reply@joseevillasmil.site')
+            ->from(env('EMAIL_FROM'))
             ->view('mails/confirm')
             ->with('fecha', $this->fecha);
     }
