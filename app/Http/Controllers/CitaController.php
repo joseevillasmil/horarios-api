@@ -99,17 +99,17 @@ class CitaController extends Controller
         // Buscamos la cantidad de días del mes y la fecha actual.
         $avaiable = [];
         if($request->mes) {
-            $mes = (int)$request->mes;
+            $mes = $request->mes;
             $maximo = (int)$request->mes;
         }else {
             $maximo = 12;
-            $mes = (int)date('m');
+            $mes = date('m');
         }
 
         $today = \DateTime::createFromFormat('Y-m-d', date('Y-m-d'));
 
         //Recorremos.
-        for($j = $mes; $mes <= $maximo; $mes++) {
+        for($j = (int)$mes; $j <= $maximo; $j++) {
             $c = cal_days_in_month(CAL_GREGORIAN, str_pad($j, 2, '0', STR_PAD_LEFT), date('Y'));
             for ($i = 1; $i <= $c; $i++) {
                 $date_str = date('Y') . "-".str_pad($j, 2, '0', STR_PAD_LEFT)."-" . str_pad($i, 2, '0', STR_PAD_LEFT);
