@@ -28,7 +28,7 @@ class Confirm extends Mailable
      */
     public function build()
     {
-        return $this->subject('Hora de atención asignada')
+        return $this->subject('Hora de atención reservada')
             ->from(env('MAIL_FROM'), env('MAIL_FROM_NAME'))
             ->view('mails/confirm')
             ->with('fecha', $this->fecha);
