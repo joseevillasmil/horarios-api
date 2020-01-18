@@ -27,7 +27,7 @@ class UsuariosController extends Controller
     }
 
     function passwordResetRequest(Request $request) {
-        $usuario = User::where('email', 'ilike', $request->email)->first();
+        $usuario = User::where('email', 'like', $request->email)->first();
         if(!$usuario) {
             return response()->json(['error' => 'User not found'], 404);
         }

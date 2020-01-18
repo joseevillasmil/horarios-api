@@ -27,7 +27,7 @@ class ClienteController extends Controller
         if($request->all()) {
             foreach($request->all() as $column => $value) {
                 if($column != 'page') {
-                    $clientes->where($column, 'ilike', $value . '%');
+                    $clientes->where($column, 'like', $value . '%');
                 }
             }
         }
@@ -42,7 +42,7 @@ class ClienteController extends Controller
     }
 
     function store(Request $request) {
-        if(Cliente::where('dni', 'ilike', $request->dni)->count()) {
+        if(Cliente::where('dni', 'like', $request->dni)->count()) {
             return response()->json(['error' => 'existe']);
         }
         $cliente = new Cliente();
@@ -58,7 +58,7 @@ class ClienteController extends Controller
         return response()->json(['idx' => $cliente->idx, 'error' => null]);
     }
     function update(Request $request, $id) {
-        if(Cliente::where('dni', 'ilike', $request->dni)
+        if(Cliente::where('dni', 'like', $request->dni)
                     ->where('id', '!=', $id)
                     ->count() ) {
             return response()->json(['error' => 'existe']);
@@ -111,7 +111,7 @@ class ClienteController extends Controller
     }
 
     function findByEmail(Request $request) {
-        $cliente = Cliente::where('correo', 'ilike', $request->correo)
+        $cliente = Cliente::where('correo', 'like', $request->correo)
                             ->whereNotNull('verificado')
                             ->first();
         return response()->json($cliente);

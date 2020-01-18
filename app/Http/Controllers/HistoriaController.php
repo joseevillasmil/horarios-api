@@ -17,7 +17,7 @@ class HistoriaController extends Controller
                     {
                         $historias->where($column, $value);
                     } else {
-                        $historias->where($column, 'ilike', $value . '%');
+                        $historias->where($column, 'like', $value . '%');
                     }
                 }
             }
