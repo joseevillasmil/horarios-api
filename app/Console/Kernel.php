@@ -25,7 +25,7 @@ class Kernel extends ConsoleKernel
      */
     protected function schedule(Schedule $schedule)
     {
-         $schedule->command('inspire')
+         $schedule->command('reportediario')
                   ->dailyAt('07:00');
     }
 
