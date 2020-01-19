@@ -16,7 +16,7 @@ class ReporteDiario extends Mailable
      *
      * @return void
      */
-    var $citas;
+    private  $citas;
     public function __construct($citas)
     {
         $this->citas = $citas;

@@ -46,8 +46,8 @@ class reportediario extends Command
                         ->whereDate('inicio', date('Y-m-d'))
                         ->whereHas('cliente')
                         ->get();
-            if($citas) {
-                // Mail::to($contenedor->correo_notificacion)->send(new \App\Mail\ReporteDiario($citas));
+            if($citas->isNotEmpty()) {
+                Mail::to($contenedor->correo_notificacion)->send(new \App\Mail\ReporteDiario($citas));
             }
 
         }
