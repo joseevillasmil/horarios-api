@@ -47,7 +47,7 @@ class reportediario extends Command
                         ->whereHas('cliente')
                         ->get();
             if($citas) {
-                Mail::to($contenedor->correo_notificacion)->send(new \App\Mail\ReporteDiario($citas));
+                // Mail::to($contenedor->correo_notificacion)->send(new \App\Mail\ReporteDiario($citas));
             }
 
         }
