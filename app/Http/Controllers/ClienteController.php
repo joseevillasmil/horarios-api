@@ -84,7 +84,7 @@ class ClienteController extends Controller
         if (!$client) {
             return response()->json(['error' => 'No existe'], 404);
         }
-        $client->nacimiento = $client->nacimiento ? $client->nacimiento->format('Y-m-d') : '';
+        $client->nacimiento = $client->nacimiento ? $client->nacimiento->format('Y-m-d') : null;
         return response()->json($client);
     }
 
