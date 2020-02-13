@@ -81,6 +81,7 @@ class ClienteController extends Controller
 
     function show($id) {
         $client = Cliente::find($id);
+        $client->load('citas');
         if (!$client) {
             return response()->json(['error' => 'No existe'], 404);
         }

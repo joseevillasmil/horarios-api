@@ -30,6 +30,7 @@ class Cita extends Model
         return $this->belongsTo('App\Cliente', 'cliente_id');
     }
 
+
     function archivos(){
         return $this->hasMany('App\Archivo', 'relation_id')->where('relation', 'cita');
     }
