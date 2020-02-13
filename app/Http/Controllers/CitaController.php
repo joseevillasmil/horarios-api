@@ -83,9 +83,8 @@ class CitaController extends Controller
         return response()->json(['idx' => $cita->idx]);
     }
 
-    function destroy($idx){
-        $cita = Cita::where('idx', $idx)
-            ->first();
+    function destroy($id){
+        $cita = Cita::find($id);
         $cita->delete();
 
         return response()->json(['ok']);
