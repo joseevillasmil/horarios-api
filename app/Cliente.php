@@ -18,7 +18,7 @@ class Cliente extends Model
     }
 
     function citas() {
-        return $this->hasMany('App\Cita', 'cliente_id');
+        return $this->hasMany('App\Cita', 'cliente_id')->orderBy('id', 'desc');
     }
 
     function historias() {

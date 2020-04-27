@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Cliente;
+use App\Comentario;
 use App\Mail\ValidarEmail;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Mail;
@@ -116,5 +117,14 @@ class ClienteController extends Controller
                             ->whereNotNull('verificado')
                             ->first();
         return response()->json($cliente);
+    }
+
+    function getCommentarios($id) {
+        $comments = Comentario::whereHas('cita', function($q) use($id) {
+            $q->where('cliente_id', $id);
+        })->orderBy('id', 'desc')
+            ->get();
+
+        return response()->json($comments);
     }
 }

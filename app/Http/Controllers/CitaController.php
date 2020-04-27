@@ -19,9 +19,12 @@ class CitaController extends Controller
         $cliente = Cliente::where('idx', $request->cliente)->first();
         $cita = new Cita();
         $cita->fill($request->all());
-        $contenedor = Contenedor::select('id')
-                        ->where('idx', $request->contenedor)
+        $contenedor = Contenedor::where('idx', $request->contenedor)
                         ->first();
+
+        $inicio = new \DateTime( $request->inicio );
+        #Agregamos mediante el dateInterval los minutos de duración.
+        $cita->fin = $inicio->add(new \DateInterval("PT".$contenedor->configuracion->step."M"))->format('Y-m-d H:i:s');
         $cita->cliente_id = $cliente->id;
         $cita->contenedor_id = $contenedor->id;
         $cita->codigo = Str::random(6);
@@ -65,11 +68,9 @@ class CitaController extends Controller
         return response()->json($citas);
     }
 
-    function show(Request $request, $idx){
-        $columns = ['idx', 'usuario_id', 'contenedor_id', 'estado', 'comentario', 'inicio', 'fin'];
-        $cita = Cita::select($columns)
-            ->where('idx', $idx)
-            ->with(['contenedor', 'cliente', 'archivos', 'historias'])
+    function show($id){
+        $cita = Cita::where('idx', $id)
+            ->with(['contenedor', 'cliente', 'archivos', 'comentarios', 'archivos'])
             ->first();
         return response()->json($cita);
     }
@@ -167,7 +168,7 @@ class CitaController extends Controller
         }while(strtotime($aux) < strtotime($time[1]) && count($steps) < 1440);
 
         // postgre $taken = Cita::select(\DB::raw('to_char(inicio, \'HH24:MI\') as time'))
-        $taken = Cita::select(\DB::raw('DATE_FORMAT(inicio, \'%H:%i\') as time'))
+        $taken = Cita::select(\DB::raw('to_char(inicio, \'HH24:MI\') as time'))
                     ->whereDate('inicio', $request->day)
                     ->groupBy('time')
                     ->havingRaw('count(id) >='. $contenedor->configuracion->slots)

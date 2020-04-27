@@ -65,6 +65,18 @@ return [
             'schema' => 'public',
             'sslmode' => 'prefer',
         ],
+        'pgcons' => [
+            'driver' => 'pgsql',
+            'host' => env('DB_CON_HOST', '127.0.0.1'),
+            'port' => env('DB_CON_PORT', '5432'),
+            'database' => env('DB_CON_DATABASE', 'forge'),
+            'username' => env('DB_CON_USERNAME', 'forge'),
+            'password' => env('DB_CON_PASSWORD', ''),
+            'charset' => 'utf8',
+            'prefix' => '',
+            'schema' => 'public',
+            'sslmode' => 'prefer',
+        ],
 
     ],
 

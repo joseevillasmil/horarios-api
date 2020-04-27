@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Comentario;
 use App\Mail\resetPassword;
 use App\Mail\resetPasswordRequest;
 use Illuminate\Http\Request;

@@ -35,4 +35,8 @@ class Cita extends Model
         return $this->hasMany('App\Archivo', 'relation_id')->where('relation', 'cita');
     }
 
+    function comentarios() {
+        return $this->hasMany('App\Comentario', 'cita_id')->orderBy('id', 'desc');
+    }
+
 }
