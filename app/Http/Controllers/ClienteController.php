@@ -13,12 +13,12 @@ class ClienteController extends Controller
 {
     function index(Request $request) {
         if ( $request->list ) {
-            $clientes = Cliente::select('idx', DB::raw("concat(nombre, ' ', dni) as text"))
+            $clientes = Cliente::select('idx', 'nombre', 'dni')
                         ->orderBy('nombre')
                         ->get();
             $return = [];
             foreach($clientes as $cliente) {
-                $return[] = ['id' => $cliente->idx, 'text' => $cliente->text];
+                $return[] = ['id' => $cliente->idx, 'text' => $cliente->nombre . ' ' . $cliente->dni];
             }
             return response()->json(['data' => $return]);
         } else {
