@@ -3,7 +3,6 @@
 namespace App\Http;
 
 use App\Http\Middleware\Cors;
-use App\Http\Middleware\DatabaseConnection;
 use Illuminate\Foundation\Http\Kernel as HttpKernel;
 
 class Kernel extends HttpKernel
@@ -60,5 +59,14 @@ class Kernel extends HttpKernel
         'throttle' => \Illuminate\Routing\Middleware\ThrottleRequests::class,
         'cors' => Cors::class,
         'client' => DatabaseConnection::class,
+    ];
+
+    protected $middlewarePriority = [
+        \App\Http\Middleware\DatabaseConnection::class,
+        \Illuminate\Session\Middleware\StartSession::class,
+        \Illuminate\View\Middleware\ShareErrorsFromSession::class,
+        \Illuminate\Auth\Middleware\Authenticate::class,
+        \Illuminate\Routing\Middleware\SubstituteBindings::class,
+        \Illuminate\Auth\Middleware\Authorize::class,
     ];
 }
