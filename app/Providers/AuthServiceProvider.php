@@ -29,14 +29,14 @@ class AuthServiceProvider extends ServiceProvider
         $this->registerPolicies();
 
         Route::prefix('{client}')->group(function() {
-            Route::middleware(['client', 'cors'])->group(function () {
+            Route::middleware(['client'])->group(function () {
                 Passport::routes(function ($router) {
                     $router->forAccessTokens();
                 });
             });
         });
-        Passport::tokensExpireIn(Carbon::now()->addDays(1));
-        Passport::refreshTokensExpireIn(Carbon::now()->addDays(1));
+        Passport::tokensExpireIn(Carbon::now()->addDays(365));
+        Passport::refreshTokensExpireIn(Carbon::now()->addDays(365));
 
         //
     }
