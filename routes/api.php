@@ -17,7 +17,7 @@ use Illuminate\Http\Request;
 */
 Route::post('{client}/login', 'Auth\LoginController@login')->middleware('client');
 Route::prefix('{client}')->group(function() {
-    Route::middleware(['client'])->group(function () {
+    Route::middleware(['client', 'auth:api'])->group(function () {
         Route::get('user', function (Request $request) {
             return $request->user();
         });
